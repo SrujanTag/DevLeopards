@@ -5,51 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HirePortfolio Dashboard</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 
     <style>
         html {
-            scroll-behavior: smooth;  /* Smooth scroll for navbar links */
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR (NO HAMBURGER MENU) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">HirePortfolio</a>
+            <a class="navbar-brand" href="#"><strong>HirePortfolio</strong></a>
 
-            <!-- Always visible navbar links -->
+
             <ul class="navbar-nav ms-auto d-flex flex-row gap-3">
                 <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#form">Register</a></li>
-                <li class="nav-item"><a class="nav-link" href="#table">Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="#cards">Services</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#form">Register</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#table">Users</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#cards">Services</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#Login">Login/SignUp</a></li>
             </ul>
         </div>
     </nav>
 
 
 
-    <!-- CAROUSEL -->
     <div id="home" class="container mt-4">
         <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
 
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
-            </div>
+            
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" class="d-block w-100 carousel-img">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption ">
                         <h3>Showcase Your Portfolio</h3>
                         <p>Let companies discover your skills and hire you instantly.</p>
                     </div>
@@ -57,7 +50,7 @@
 
                 <div class="carousel-item">
                     <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" class="d-block w-100 carousel-img">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption">
                         <h3>Get Hired Faster</h3>
                         <p>Connect with clients and employers seeking your expertise.</p>
                     </div>
@@ -65,7 +58,7 @@
 
                 <div class="carousel-item">
                     <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998" class="d-block w-100 carousel-img">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption">
                         <h3>Find Paid Tasks</h3>
                         <p>Complete tasks posted by others and earn money.</p>
                     </div>
@@ -76,7 +69,6 @@
 
 
 
-    <!-- INTRO SECTION -->
     <section class="container intro-section mt-5 p-4">
         <h2 class="text-center">Welcome to HirePortfolio</h2>
         <p class="text-center mt-3">
@@ -115,14 +107,14 @@
         </div>
     </div>
 
-    <!-- Hidden Button Trigger -->
+
     <button id="realModalTrigger" type="button"
             data-bs-toggle="modal" 
             data-bs-target="#registerModal"
             style="display:none;">
     </button>
 
-    <!-- Visible Button -->
+
     <button type="submit" class="btn btn-primary">
         Register
     </button>
@@ -132,7 +124,7 @@
 
 
 
-    <!-- REGISTER POPUP MODAL -->
+
     <div class="modal fade" id="registerModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -156,7 +148,7 @@
 
 
 
-    <!-- USER TABLE -->
+
     <div id="table" class="container mt-5">
         <h2>Registered Users</h2>
 
@@ -173,17 +165,53 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
+                    <td>Kartikeya Choudhary</td>
+                    <td>kartikeya@gmail.com</td>
                     <td><button class="btn btn-sm btn-primary">Apply</button></td>
                 </tr>
+                
+                <tr>
+                    <td>2</td>
+                    <td>Srujan Tagalpallewar</td>
+                    <td>srujan@gmail.com</td>
+                    <td><button class="btn btn-sm btn-primary">Apply</button></td>
+                </tr>
+                
+                <tr>
+                    <td>3</td>
+                    <td>Palak Dasauni</td>
+                    <td>palak@gmail.com</td>
+                    <td><button class="btn btn-sm btn-primary">Apply</button></td>
+                </tr>
+                
+                <tr>
+                    <td>4</td>
+                    <td>Ayush Bharti</td>
+                    <td>ayush@gmail.com</td>
+                    <td><button class="btn btn-sm btn-primary">Apply</button></td>
+                </tr>
+                
+                <tr>
+                    <td>5</td>
+                    <td>Eshita Modi</td>
+                    <td>eshita@gmail.com</td>
+                    <td><button class="btn btn-sm btn-primary">Apply</button></td>
+                </tr>
+                
+                <tr>
+                    <td>6</td>
+                    <td>Aadya Agrawal</td>
+                    <td>aadya@gmail.com</td>
+                    <td><button class="btn btn-sm btn-primary">Apply</button></td>
+                </tr>
+                
             </tbody>
         </table>
     </div>
 
 
 
-    <!-- SERVICES -->
+
     <div id="cards" class="container mt-5">
         <h2>Our Services</h2>
 
@@ -216,7 +244,7 @@
 
 
 
-    <!-- FOOTER -->
+
     <footer class="footer">
         <p>© 2025 HirePortfolio. All Rights Reserved.</p>
     </footer>

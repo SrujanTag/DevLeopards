@@ -4,22 +4,22 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Carousel images */
+
 .carousel-img {
-    height: 380px;   /* smaller height */
+    height: 380px; 
     object-fit: cover;
     border-radius: 8px;
 }
 
 
-/* Intro Section */
+
 .intro-section {
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* Service Cards */
+
 .service-card {
     border-radius: 12px;
     transition: 0.3s;
@@ -30,9 +30,9 @@ body {
     box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
-/* Footer */
+
 .footer {
-    background: #0d6efd;      /* SAME as navbar */
+    background: #0d6efd;      
     color: white;
     text-align: center;
     padding: 35px 0;
