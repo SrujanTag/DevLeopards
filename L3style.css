@@ -1,91 +1,45 @@
-/* Root Theme Colors — LIGHT THEME */
-:root {
-    --primary-bg: #F4F6FC;      /* Ice White */
-    --primary-color: #8A2BE2;   /* Neon Purple (accent) */
-    --text-color: #1E1E2F;      /* Midnight Blue */
-    --card-bg: #ffffff;
-}
-
 body {
-    background: var(--primary-bg);
-    color: var(--text-color);
+    background: #f5f7fa;
+    color: #1a1a1a;
     font-family: Arial, sans-serif;
 }
 
-/* Navbar */
-.custom-nav {
-    background: var(--primary-color);
-    padding: 12px;
+/* Carousel images */
+.carousel-img {
+    height: 380px;   /* smaller height */
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-.custom-nav .nav-link {
-    color: white !important;
-    margin: 0 15px;
-    font-weight: 500;
+
+/* Intro Section */
+.intro-section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.custom-nav .nav-link:hover {
-    text-decoration: underline;
-}
-
-/* Home Images */
-#home img {
+/* Service Cards */
+.service-card {
     border-radius: 12px;
-}
-
-/* Home text */
-#home p {
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-/* Cards */
-.card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 2px solid var(--primary-color);
     transition: 0.3s;
 }
 
-.card:hover {
-    transform: scale(1.03);
-}
-
-/* Table */
-table {
-    background: white;
-    border: 2px solid var(--primary-color);
-}
-
-table th {
-    background: var(--primary-color);
-    color: white;
-}
-
-table td {
-    border-color: var(--primary-color);
-}
-
-/* Form Labels */
-form .form-label {
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-/* Buttons */
-.btn-primary,
-.btn-success {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.btn-primary:hover,
-.btn-success:hover {
-    opacity: 0.8;
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 /* Footer */
-.custom-footer {
-    background: var(--primary-color);
+.footer {
+    background: #0d6efd;      /* SAME as navbar */
     color: white;
+    text-align: center;
+    padding: 35px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 60px;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
 }
+
