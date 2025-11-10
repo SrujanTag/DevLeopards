@@ -2,8 +2,38 @@ body {
     background: #f5f7fa;
     color: #1a1a1a;
     font-family: Arial, sans-serif;
+    margin-left: 230px;
 }
 
+
+
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 230px;
+    padding-top: 80px; 
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.sidebar-link {
+    display: block;
+    color: white;
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.sidebar-link:hover {
+    background: rgba(255,255,255,0.3);
+}
 
 .carousel-img {
     height: 380px; 
