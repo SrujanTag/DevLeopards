@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 // ==========================================
 // 0. ICONS
@@ -52,6 +52,10 @@ const Star = (p) => <IconWrapper {...p}><polygon points="12 2 15.09 8.26 22 9.27
 const CheckCircle = (p) => <IconWrapper {...p}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconWrapper>;
 const Send = (p) => <IconWrapper {...p}><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></IconWrapper>;
 const Shield = (p) => <IconWrapper {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></IconWrapper>;
+const Rocket = (p) => <IconWrapper {...p}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></IconWrapper>;
+const MessageSquare = (p) => <IconWrapper {...p}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></IconWrapper>;
+const Palette = (p) => <IconWrapper {...p}><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></IconWrapper>;
+const Cpu = (p) => <IconWrapper {...p}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" x2="9" y1="1" y2="4"/><line x1="15" x2="15" y1="1" y2="4"/><line x1="9" x2="9" y1="20" y2="23"/><line x1="15" x2="15" y1="20" y2="23"/><line x1="20" x2="23" y1="9" y2="9"/><line x1="20" x2="23" y1="15" y2="15"/><line x1="1" x2="4" y1="9" y2="9"/><line x1="1" x2="4" y1="15" y2="15"/></IconWrapper>;
 
 // Brand Icons
 const GoogleIcon = (props) => (
@@ -159,6 +163,39 @@ const USERS = [
   },
 ];
 
+const FEATURED_PROJECTS = [
+  {
+    id: 1,
+    title: "CampusConnect",
+    desc: "A collaborative platform for students to share notes and organize study groups. Features real-time chat and file sharing.",
+    tags: ["React", "Node.js", "Socket.io"],
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?fit=crop&w=800&q=80"
+  },
+  {
+    id: 2,
+    title: "EcoTracker",
+    desc: "Mobile-first web app helping users track their carbon footprint with gamified challenges and daily tips.",
+    tags: ["Vue.js", "Firebase", "D3.js"],
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?fit=crop&w=800&q=80"
+  },
+  {
+    id: 3,
+    title: "FinWiz Dashboard",
+    desc: "Comprehensive financial analytics dashboard with predictive modelling for personal expense tracking.",
+    tags: ["Python", "Django", "React"],
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fit=crop&w=800&q=80"
+  }
+];
+
+const TECH_STACK = [
+  { name: "React", icon: Code },
+  { name: "Node.js", icon: Terminal },
+  { name: "Python", icon: Terminal },
+  { name: "Database", icon: Database },
+  { name: "Design", icon: Palette },
+  { name: "Cloud", icon: Globe },
+];
+
 // Helper to generate rich data for anyone (even if not explicitly defined)
 const getDetailedData = (user) => {
   // Default structure
@@ -216,6 +253,44 @@ const getDetailedData = (user) => {
 // ==========================================
 // 2. COMPONENTS
 // ==========================================
+
+// --- Animation Wrapper Component ---
+const FadeInSection = ({ children, delay = 0, className = "" }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(domRef.current);
+      }
+    });
+
+    const currentElement = domRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={domRef}
+      className={`transition-all duration-1000 ease-out transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
 // --- Navbar ---
 const Navbar = ({ activePage, setActivePage, toggleSidebar }) => {
@@ -318,8 +393,15 @@ const Navbar = ({ activePage, setActivePage, toggleSidebar }) => {
   );
 };
 
-// --- Sidebar Component (Updated for Minimal Variant) ---
+// --- Sidebar Component (Updated for Home Variant) ---
 const Sidebar = ({ isOpen, toggle, activeRole, setActiveRole, searchQuery, setSearchQuery, variant = 'default' }) => {
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <aside 
       className={`
@@ -333,14 +415,15 @@ const Sidebar = ({ isOpen, toggle, activeRole, setActiveRole, searchQuery, setSe
         {/* Sidebar Header */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-white font-bold text-lg flex items-center gap-2">
-            <Filter size={18} className="text-blue-500"/> {variant === 'minimal' ? 'Options' : 'Filters'}
+            {variant === 'minimal' ? <Settings size={18} className="text-blue-500"/> : <Filter size={18} className="text-blue-500"/>} 
+            {variant === 'minimal' ? 'Options' : variant === 'home' ? 'Navigate' : 'Filters'}
           </h3>
           <button onClick={toggle} className="md:hidden text-gray-400">
             <X size={20} />
           </button>
         </div>
 
-        {variant === 'default' ? (
+        {variant === 'default' && (
           <>
             {/* Content Section 1: Search */}
             <div className="mb-6">
@@ -399,13 +482,33 @@ const Sidebar = ({ isOpen, toggle, activeRole, setActiveRole, searchQuery, setSe
               </div>
             </div>
           </>
-        ) : (
-          /* Minimal Sidebar Content for Hire Page */
+        )}
+
+        {variant === 'minimal' && (
           <div className="mb-6">
              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700 mb-6">
                <h4 className="text-white text-sm font-bold mb-2">Hiring Support</h4>
                <p className="text-xs text-gray-400 mb-3">Not sure who you need? We can help you define the role.</p>
                <button className="text-xs bg-blue-600/20 text-blue-400 px-3 py-2 rounded border border-blue-600/30 hover:bg-blue-600/30 w-full">Schedule Call</button>
+             </div>
+          </div>
+        )}
+
+        {variant === 'home' && (
+          <div className="mb-6 space-y-4">
+             <div className="space-y-2">
+               <button onClick={() => scrollToSection('hero')} className="flex items-center gap-3 text-gray-300 hover:text-white w-full text-left p-2 rounded hover:bg-gray-800 transition-colors text-sm">
+                 <Rocket size={16} /> Welcome
+               </button>
+               <button onClick={() => scrollToSection('featured-projects')} className="flex items-center gap-3 text-gray-300 hover:text-white w-full text-left p-2 rounded hover:bg-gray-800 transition-colors text-sm">
+                 <Layers size={16} /> Projects
+               </button>
+               <button onClick={() => scrollToSection('tech-stack')} className="flex items-center gap-3 text-gray-300 hover:text-white w-full text-left p-2 rounded hover:bg-gray-800 transition-colors text-sm">
+                 <Cpu size={16} /> Technologies
+               </button>
+               <button onClick={() => scrollToSection('achievements')} className="flex items-center gap-3 text-gray-300 hover:text-white w-full text-left p-2 rounded hover:bg-gray-800 transition-colors text-sm">
+                 <Trophy size={16} /> Achievements
+               </button>
              </div>
           </div>
         )}
@@ -442,313 +545,6 @@ const Sidebar = ({ isOpen, toggle, activeRole, setActiveRole, searchQuery, setSe
     </aside>
   );
 };
-
-// --- Portfolio Card ---
-const PortfolioCard = ({ person, onViewProfile }) => {
-  const colorMap = {
-    cyan: "from-cyan-400",
-    purple: "from-purple-400",
-    emerald: "from-emerald-400",
-    blue: "from-blue-400",
-    pink: "from-pink-400",
-    orange: "from-orange-400",
-  };
-
-  const gradientFrom = colorMap[person.color] || "from-blue-400";
-  const allSkills = [...person.skills.frontend, ...person.skills.backend].slice(0, 3);
-
-  return (
-    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 hover:shadow-2xl transition-all duration-300 flex flex-col h-full group">
-      <div className="p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <div className="flex-shrink-0">
-          <div className={`w-24 h-24 rounded-full p-1 bg-gradient-to-br ${gradientFrom} to-blue-600`}>
-            <img 
-              src={person.avatar} 
-              alt={person.name} 
-              className="w-full h-full rounded-full bg-gray-900 object-cover"
-            />
-          </div>
-        </div>
-        <div className="flex-1 text-center sm:text-left">
-          <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
-            {person.name}
-          </h3>
-          <p className="text-blue-400 font-medium text-sm mb-3 uppercase tracking-wide">
-            {person.role}
-          </p>
-          <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
-            {allSkills.map((skill, index) => (
-              <span 
-                key={index} 
-                className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md border border-gray-600"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="mt-auto bg-gray-900/50 p-4 border-t border-gray-700 flex justify-between items-center">
-        <span className="text-xs text-gray-500">Available for hire</span>
-        <button 
-          onClick={() => onViewProfile(person)}
-          className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-1"
-        >
-          View Profile <ChevronRight size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// --- Portfolio Grid ---
-const PortfolioGrid = ({ isSidebarOpen, toggleSidebar, activeRole, searchQuery, onSelectMember }) => {
-  const filteredMembers = useMemo(() => {
-    return USERS.filter(user => {
-      const matchesRole = activeRole === 'All' || user.role.includes(activeRole);
-      const matchesSearch = 
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        Object.values(user.skills).flat().some(s => s.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchesRole && matchesSearch;
-    });
-  }, [activeRole, searchQuery]);
-
-  return (
-    <div className="flex-1 bg-gray-950 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-end mb-12">
-          <div className="text-left">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Meet Our Team
-            </h2>
-            <p className="text-gray-400 max-w-2xl">
-              Browse through our talented team of developers and designers.
-            </p>
-          </div>
-          {!isSidebarOpen && (
-            <button 
-              onClick={toggleSidebar}
-              className="md:hidden flex items-center gap-2 bg-gray-800 text-gray-200 px-4 py-2 rounded-lg text-sm border border-gray-700"
-            >
-              <Filter size={16} /> Filters
-            </button>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredMembers.map((member) => (
-            <PortfolioCard key={member.id} person={member} onViewProfile={onSelectMember} />
-          ))}
-          {filteredMembers.length === 0 && (
-             <div className="col-span-full text-center py-20 bg-gray-900 rounded-xl border border-gray-800">
-                <User size={48} className="mx-auto text-gray-700 mb-4" />
-                <h3 className="text-white font-bold text-xl">No team members found</h3>
-                <p className="text-gray-500">Try adjusting your filters.</p>
-             </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- NEW MEMBER PROFILE (Detailed) ---
-function MemberProfile({ baseMember, onHire, onBack }) {
-  const member = getDetailedData(baseMember);
-  const colors = {
-    cyan: "text-cyan-400",
-    purple: "text-purple-400",
-    emerald: "text-emerald-400",
-    blue: "text-blue-400",
-    pink: "text-pink-400",
-    orange: "text-orange-400",
-  };
-  const accentColor = colors[member.color] || "text-blue-400";
-  const [firstName, ...lastName] = member.name.split(" ");
-
-  return (
-    <div className="min-h-screen bg-[#0B0E14] text-gray-300 font-sans">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <button 
-          onClick={onBack} 
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors bg-[#1C1F26] px-4 py-2 rounded-full text-sm font-medium border border-[#2F333A]"
-        >
-          <ArrowLeft size={16}/> Back to Team
-        </button>
-      </div>
-
-      <div className="flex flex-col items-center justify-center text-center px-4 pb-16 relative overflow-hidden">
-        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-${member.color}-900/20 rounded-full blur-[120px] pointer-events-none`}></div>
-        <div className="relative z-10 animate-fade-in-up">
-           <div className="inline-block px-3 py-1 mb-6 rounded-full border border-gray-700 bg-gray-900/50 text-[10px] tracking-widest uppercase text-gray-400">
-             Hello_World
-           </div>
-           <h1 className="text-6xl md:text-8xl font-black text-white mb-4 tracking-tight">
-             I'm <span className={`text-transparent bg-clip-text bg-gradient-to-r from-white to-${member.color}-500`}>{firstName}</span>
-           </h1>
-           <p className="text-xl md:text-2xl text-gray-400 font-light mb-8 flex items-center justify-center gap-3">
-             {member.role} <span className="text-gray-600">•</span> Problem Solver
-           </p>
-           <div className="flex flex-wrap justify-center gap-3 mb-10">
-              {member.badges.map((badge, idx) => (
-                <span key={idx} className="px-4 py-1.5 rounded-full bg-[#1C1F26] border border-[#2F333A] text-xs font-bold text-gray-300 flex items-center gap-2">
-                   {idx === 0 ? "🚀" : idx === 1 ? "💻" : "🌍"} {badge}
-                </span>
-              ))}
-           </div>
-           <div className="flex items-center justify-center gap-4">
-              <button 
-                onClick={() => onHire(member)}
-                className={`bg-gradient-to-r from-${member.color}-600 to-${member.color}-500 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-${member.color}-500/25 hover:shadow-${member.color}-500/40 hover:-translate-y-1 transition-all flex items-center gap-2`}
-              >
-                <Briefcase size={18} /> Hire Me
-              </button>
-              <div className="flex gap-2">
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Github size={20}/></button>
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Linkedin size={20}/></button>
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Mail size={20}/></button>
-              </div>
-           </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 pb-20">
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-               <section>
-                 <div className="flex items-center gap-2 mb-4 text-white font-bold text-xl">
-                    <User className={accentColor} size={24} /> About
-                 </div>
-                 <div className="bg-[#11141B] p-8 rounded-2xl border border-[#1F232C] leading-relaxed text-gray-400">
-                    <p className="mb-4">{member.bio}</p>
-                    <p>Highly skilled in creating scalable, robust web applications. Passionate about clean code, user-centric design, and optimizing performance for millions of users. Always eager to learn new technologies and contribute to open-source communities.</p>
-                 </div>
-               </section>
-               <section>
-                 <div className="flex items-center gap-2 mb-4 text-white font-bold text-xl">
-                    <Zap className={accentColor} size={24} /> Technical Expertise
-                 </div>
-                 <div className="flex flex-wrap gap-2 mb-6">
-                    {member.arsenal.frontend.map((skill) => (
-                      <span key={skill} className="px-4 py-2 bg-[#161922] border border-[#252A36] rounded-lg text-sm text-gray-300 hover:border-gray-500 transition-colors cursor-default">
-                        {skill}
-                      </span>
-                    ))}
-                 </div>
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
-                       <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4 text-blue-400"><Layout size={20}/></div>
-                       <h3 className="text-white font-bold mb-4">Frontend</h3>
-                       <ul className="space-y-2 text-sm text-gray-400">
-                          {member.arsenal.frontend.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>{s}</li>)}
-                       </ul>
-                    </div>
-                     <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
-                       <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 text-emerald-400"><Database size={20}/></div>
-                       <h3 className="text-white font-bold mb-4">Backend</h3>
-                       <ul className="space-y-2 text-sm text-gray-400">
-                          {member.arsenal.backend.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>{s}</li>)}
-                       </ul>
-                    </div>
-                     <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
-                       <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4 text-orange-400"><Terminal size={20}/></div>
-                       <h3 className="text-white font-bold mb-4">Tools</h3>
-                       <ul className="space-y-2 text-sm text-gray-400">
-                          {member.arsenal.tools.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>{s}</li>)}
-                       </ul>
-                    </div>
-                 </div>
-               </section>
-               <section>
-                 <div className="flex items-center gap-2 mb-6 text-white font-bold text-xl">
-                    <Layers className={accentColor} size={24} /> Featured Projects
-                 </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {member.projects.map((project, idx) => (
-                      <div key={idx} className="bg-[#11141B] rounded-2xl overflow-hidden border border-[#1F232C] group hover:border-[#3a4150] transition-all">
-                         <div className="h-48 overflow-hidden relative">
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
-                            <img src={project.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={project.title} />
-                         </div>
-                         <div className="p-6">
-                            <h4 className="text-white font-bold text-lg mb-2">{project.title}</h4>
-                            <p className="text-sm text-gray-400 mb-4 line-clamp-2">{project.desc}</p>
-                            <div className="flex justify-between items-center">
-                               <div className="flex gap-2">
-                                  {project.tags.map(t => <span key={t} className="text-[10px] px-2 py-1 bg-[#1C1F26] rounded-md text-gray-300 border border-[#2F333A]">{t}</span>)}
-                               </div>
-                               <button className="text-gray-500 hover:text-white"><ExternalLink size={16}/></button>
-                            </div>
-                         </div>
-                      </div>
-                    ))}
-                 </div>
-               </section>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
-                      <h3 className="text-white font-bold mb-4 flex items-center gap-2"><BookOpen size={18} className="text-blue-400"/> Education</h3>
-                      <div>
-                         <div className="text-white font-medium">{member.education.school}</div>
-                         <div className="text-gray-400 text-sm">{member.education.degree}</div>
-                         <div className="text-gray-600 text-xs mt-1">{member.education.year}</div>
-                      </div>
-                  </div>
-                  <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
-                      <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Globe size={18} className="text-emerald-400"/> Languages</h3>
-                      <div className="flex gap-2 flex-wrap">
-                          {member.languages.map(l => (
-                            <span key={l} className="px-3 py-1 bg-[#1C1F26] border border-[#2F333A] rounded-lg text-sm text-gray-300">
-                               {l}
-                            </span>
-                          ))}
-                      </div>
-                  </div>
-               </div>
-            </div>
-            <div className="lg:col-span-1 space-y-6">
-               <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] sticky top-24">
-                  <h3 className="text-white font-bold text-lg mb-6">Availability</h3>
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-[#1F232C]">
-                     <span className="text-gray-400 text-sm">Current Status</span>
-                     <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full font-medium border border-emerald-500/20 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {member.availability.status}
-                     </span>
-                  </div>
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-[#1F232C]">
-                     <span className="text-gray-400 text-sm">Timezone</span>
-                     <span className="text-white text-sm font-medium">{member.availability.timezone}</span>
-                  </div>
-                  <div className="flex items-center justify-between mb-8">
-                     <span className="text-gray-400 text-sm">Response Time</span>
-                     <span className="text-white text-sm font-medium">{member.availability.response}</span>
-                  </div>
-                  <button 
-                     onClick={() => onHire(member)}
-                     className="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors flex justify-center items-center gap-2"
-                  >
-                     Hire Me
-                  </button>
-               </div>
-               <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
-                  <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Trophy size={18} className="text-yellow-400"/> Awards</h3>
-                  <div className="space-y-4">
-                     {member.awards.map((award, i) => (
-                        <div key={i} className="flex gap-3">
-                           <Star size={16} className="text-yellow-500 mt-0.5 shrink-0"/>
-                           <div>
-                              <div className="text-white text-sm font-medium">{award.title}</div>
-                              <div className="text-gray-500 text-xs">{award.org}</div>
-                           </div>
-                        </div>
-                     ))}
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-    </div>
-  );
-}
 
 // --- NEW LOGIN PAGE COMPONENTS ---
 
@@ -953,7 +749,13 @@ const HireTalentPage = ({ prefilledMember, onFindTalent }) => {
     if (prefilledMember) {
       alert(`Request Sent! \nWe'll contact ${formData.email} regarding your request for ${prefilledMember.name}.`);
     } else {
-      onFindTalent(formData.role);
+      // Check if onFindTalent is provided before calling it
+      if (onFindTalent) {
+        onFindTalent(formData.role);
+      } else {
+        // Fallback or just alert if function not passed
+        alert(`Request Sent! We'll find a ${formData.role} for you.`);
+      }
     }
   };
 
@@ -1094,6 +896,595 @@ const HireTalentPage = ({ prefilledMember, onFindTalent }) => {
   );
 };
 
+// --- HomePage Component ---
+const HomePage = ({ onNavigate, onSelectMember }) => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    // Add passive listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const noiseBg = `data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 25 -24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E`;
+
+  // Define animations in a style tag
+  const styles = `
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+  `;
+
+  return (
+    <div className="bg-gray-950 text-white overflow-hidden scroll-smooth">
+      <style>{styles}</style>
+      
+      {/* 1. HERO SECTION WITH PARALLAX & NOISE */}
+      <section id="hero" className="relative px-4 py-20 lg:py-32 flex flex-col items-center text-center overflow-hidden min-h-[700px] justify-center">
+        
+        {/* Parallax Background Container */}
+        <div 
+          className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 pointer-events-none"
+          style={{ 
+            transform: `translate3d(0, ${scrollY * 0.3}px, 0)`, // Parallax movement
+            willChange: 'transform'
+          }}
+        >
+          {/* Base Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-gray-900 to-gray-900"></div>
+          
+          {/* Decorative Blobs */}
+          <div className="absolute top-1/4 right-10 w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] animate-blob"></div>
+          <div className="absolute bottom-1/4 left-10 w-96 h-96 bg-cyan-600/20 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-blue-600/20 rounded-full blur-[100px] animate-blob animation-delay-4000 transform -translate-x-1/2 -translate-y-1/2"></div>
+
+          {/* Sparse White Noise Overlay */}
+          <div 
+            className="absolute inset-0 opacity-30" 
+            style={{ backgroundImage: `url('${noiseBg}')` }}
+          ></div>
+          
+          {/* Vignette to fade edges */}
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-gray-950/50"></div>
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto mt-10">
+          <FadeInSection delay={100}>
+            <div className="inline-block px-3 py-1 mb-6 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold tracking-widest uppercase animate-bounce">
+              Welcome to the future
+            </div>
+          </FadeInSection>
+
+          <FadeInSection delay={300}>
+            <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight drop-shadow-2xl">
+              Meet Our Dev Team <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                Building Solutions Together
+              </span>
+            </h1>
+          </FadeInSection>
+
+          <FadeInSection delay={500}>
+            <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light drop-shadow-md">
+              Explore our collective projects and dive into the individual portfolios of our specialized developers and designers.
+            </p>
+          </FadeInSection>
+
+          <FadeInSection delay={700}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => scrollToSection('featured-projects')}
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-bold text-white transition-all transform hover:-translate-y-1 hover:scale-105 shadow-lg shadow-blue-900/50 flex items-center gap-2 justify-center"
+              >
+                View Our Projects <ChevronRight size={18} />
+              </button>
+              <button 
+                onClick={() => onNavigate('portfolio')}
+                className="px-8 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-full font-bold text-white transition-all transform hover:-translate-y-1 hover:scale-105 shadow-lg backdrop-blur-sm bg-opacity-80"
+              >
+                Meet the Team
+              </button>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* 2. FEATURED PROJECTS SECTION */}
+      <section id="featured-projects" className="px-4 py-20 max-w-7xl mx-auto">
+        <FadeInSection>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3 flex items-center justify-center gap-2">
+              <Rocket className="text-purple-500" size={28} /> Featured Projects
+            </h2>
+            <p className="text-gray-400">Collaborative works built by our team.</p>
+          </div>
+        </FadeInSection>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {FEATURED_PROJECTS.map((project, index) => (
+            <FadeInSection key={project.id} delay={index * 200}>
+              <div className="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-purple-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/20 group hover:-translate-y-2 h-full flex flex-col">
+                <div className="h-48 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all z-10"></div>
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-3 flex-1">{project.desc}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded border border-gray-700">{tag}</span>
+                    ))}
+                  </div>
+                  <button className="w-full py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium text-white transition-colors border border-gray-700 mt-auto">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </FadeInSection>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. SKILLS & TECH STACK */}
+      <section id="tech-stack" className="px-4 py-16 bg-[#0B0E14] border-t border-gray-800 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <FadeInSection>
+            <h2 className="text-2xl font-bold mb-10 text-gray-200">Technologies We Work With</h2>
+          </FadeInSection>
+          
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+            {TECH_STACK.map((tech, index) => (
+              <FadeInSection key={tech.name} delay={index * 100}>
+                <div className="flex flex-col items-center group cursor-pointer">
+                  <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center border border-gray-800 group-hover:border-blue-500 group-hover:bg-blue-500/10 group-hover:text-blue-500 text-gray-500 transition-all duration-300 mb-3 shadow-lg transform group-hover:rotate-6">
+                    <tech.icon size={32} />
+                  </div>
+                  <span className="text-sm font-medium text-gray-500 group-hover:text-gray-300 transition-colors">{tech.name}</span>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. ACHIEVEMENTS */}
+      <section id="achievements" className="px-4 py-16 max-w-5xl mx-auto">
+        <FadeInSection>
+          <h2 className="text-2xl font-bold mb-8 text-center flex items-center justify-center gap-2">
+             <Trophy className="text-yellow-500" size={24} /> What We've Achieved
+          </h2>
+        </FadeInSection>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <FadeInSection delay={200}>
+             <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6 rounded-xl border border-gray-700 relative hover:border-gray-500 transition-colors">
+               <div className="text-4xl text-gray-700 absolute top-4 right-4">"</div>
+               <p className="text-gray-300 italic mb-4 z-10 relative">"The team delivered an exceptional MVP for our startup within a tight deadline. Their collaboration skills are top-notch."</p>
+               <div className="flex items-center gap-3">
+                 <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold">S</div>
+                 <span className="text-sm font-bold text-white">Startup Client A</span>
+               </div>
+             </div>
+           </FadeInSection>
+
+           <FadeInSection delay={400}>
+             <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 flex items-center gap-4 hover:border-yellow-500/50 transition-colors group">
+                <div className="p-3 bg-yellow-500/10 rounded-full group-hover:bg-yellow-500/20 transition-colors">
+                  <Trophy size={40} className="text-yellow-500" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white group-hover:text-yellow-400 transition-colors">1st Place - SmartIndia Hackathon</h4>
+                  <p className="text-sm text-gray-400">National Level Coding Competition 2024</p>
+                </div>
+             </div>
+           </FadeInSection>
+        </div>
+      </section>
+
+      {/* 5. CONTACT CTA */}
+      <section className="px-4 py-20 bg-gradient-to-b from-gray-900 to-gray-950 text-center border-t border-gray-800 relative">
+        <FadeInSection>
+          <div className="max-w-2xl mx-auto relative z-10">
+            <h2 className="text-3xl font-bold text-white mb-4">Want to Collaborate?</h2>
+            <p className="text-gray-400 mb-8 text-lg">
+              We are a team of problem solvers ready to tackle your next challenge.
+            </p>
+            <button 
+              onClick={() => onNavigate('hire')}
+              className="px-10 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold text-white shadow-lg shadow-blue-900/50 transition-all transform hover:-translate-y-1 hover:scale-105 flex items-center gap-2 mx-auto"
+            >
+              <MessageSquare size={20}/> Contact Us
+            </button>
+          </div>
+        </FadeInSection>
+      </section>
+
+    </div>
+  );
+};
+
+// --- Portfolio Card ---
+const PortfolioCard = ({ person, onViewProfile }) => {
+  const colorMap = {
+    cyan: "from-cyan-400",
+    purple: "from-purple-400",
+    emerald: "from-emerald-400",
+    blue: "from-blue-400",
+    pink: "from-pink-400",
+    orange: "from-orange-400",
+  };
+
+  const gradientFrom = colorMap[person.color] || "from-blue-400";
+  const allSkills = [...person.skills.frontend, ...person.skills.backend].slice(0, 3);
+
+  return (
+    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 hover:shadow-2xl transition-all duration-300 flex flex-col h-full group">
+      <div className="p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <div className="flex-shrink-0">
+          <div className={`w-24 h-24 rounded-full p-1 bg-gradient-to-br ${gradientFrom} to-blue-600 transform group-hover:scale-110 transition-transform duration-300`}>
+            <img 
+              src={person.avatar} 
+              alt={person.name} 
+              className="w-full h-full rounded-full bg-gray-900 object-cover border-2 border-transparent group-hover:border-white transition-all"
+            />
+          </div>
+        </div>
+        <div className="flex-1 text-center sm:text-left">
+          <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
+            {person.name}
+          </h3>
+          <p className="text-blue-400 font-medium text-sm mb-3 uppercase tracking-wide">
+            {person.role}
+          </p>
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
+            {allSkills.map((skill, index) => (
+              <span 
+                key={index} 
+                className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md border border-gray-600"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="mt-auto bg-gray-900/50 p-4 border-t border-gray-700 flex justify-between items-center">
+        <span className="text-xs text-gray-500">Available for hire</span>
+        <button 
+          onClick={() => onViewProfile(person)}
+          className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-1 hover:gap-2"
+        >
+          View Profile <ChevronRight size={16} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// --- Portfolio Grid ---
+const PortfolioGrid = ({ isSidebarOpen, toggleSidebar, activeRole, searchQuery, onSelectMember }) => {
+  const filteredMembers = useMemo(() => {
+    return USERS.filter(user => {
+      const matchesRole = activeRole === 'All' || user.role.includes(activeRole);
+      const matchesSearch = 
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        Object.values(user.skills).flat().some(s => s.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesRole && matchesSearch;
+    });
+  }, [activeRole, searchQuery]);
+
+  return (
+    <div className="flex-1 bg-gray-950 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-end mb-12 animate-fade-in-up">
+          <div className="text-left">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              Meet Our Team
+            </h2>
+            <p className="text-gray-400 max-w-2xl">
+              Browse through our talented team of developers and designers.
+            </p>
+          </div>
+          {!isSidebarOpen && (
+            <button 
+              onClick={toggleSidebar}
+              className="md:hidden flex items-center gap-2 bg-gray-800 text-gray-200 px-4 py-2 rounded-lg text-sm border border-gray-700"
+            >
+              <Filter size={16} /> Filters
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {filteredMembers.map((member, index) => (
+            <div key={member.id} style={{ animationDelay: `${index * 100}ms` }} className="animate-fade-in-up">
+               <PortfolioCard person={member} onViewProfile={onSelectMember} />
+            </div>
+          ))}
+          {filteredMembers.length === 0 && (
+             <div className="col-span-full text-center py-20 bg-gray-900 rounded-xl border border-gray-800">
+                <User size={48} className="mx-auto text-gray-700 mb-4" />
+                <h3 className="text-white font-bold text-xl">No team members found</h3>
+                <p className="text-gray-500">Try adjusting your filters.</p>
+             </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- NEW MEMBER PROFILE (Detailed) ---
+function MemberProfile({ baseMember, onHire, onBack }) {
+  // Merge base member with detailed defaults for the rich view
+  const member = getDetailedData(baseMember);
+  
+  // Dynamic color handling
+  const colors = {
+    cyan: "text-cyan-400",
+    purple: "text-purple-400",
+    emerald: "text-emerald-400",
+    blue: "text-blue-400",
+    pink: "text-pink-400",
+    orange: "text-orange-400",
+  };
+  const accentColor = colors[member.color] || "text-blue-400";
+  
+  // Name split for gradient effect
+  const [firstName, ...lastName] = member.name.split(" ");
+
+  return (
+    <div className="min-h-screen bg-[#0B0E14] text-gray-300 font-sans">
+      
+      {/* 1. TOP NAV / BACK */}
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <button 
+          onClick={onBack} 
+          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors bg-[#1C1F26] px-4 py-2 rounded-full text-sm font-medium border border-[#2F333A]"
+        >
+          <ArrowLeft size={16}/> Back to Team
+        </button>
+      </div>
+
+      {/* 2. HERO SECTION */}
+      <div className="flex flex-col items-center justify-center text-center px-4 pb-16 relative overflow-hidden">
+        {/* Background Glow */}
+        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-${member.color}-900/20 rounded-full blur-[120px] pointer-events-none`}></div>
+
+        <div className="relative z-10 animate-fade-in-up">
+           <div className="inline-block px-3 py-1 mb-6 rounded-full border border-gray-700 bg-gray-900/50 text-[10px] tracking-widest uppercase text-gray-400">
+             Hello_World
+           </div>
+           
+           <h1 className="text-6xl md:text-8xl font-black text-white mb-4 tracking-tight">
+             I'm <span className={`text-transparent bg-clip-text bg-gradient-to-r from-white to-${member.color}-500`}>{firstName}</span>
+           </h1>
+           
+           <p className="text-xl md:text-2xl text-gray-400 font-light mb-8 flex items-center justify-center gap-3">
+             {member.role} <span className="text-gray-600">•</span> Problem Solver
+           </p>
+
+           {/* Badges */}
+           <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {member.badges.map((badge, idx) => (
+                <span key={idx} className="px-4 py-1.5 rounded-full bg-[#1C1F26] border border-[#2F333A] text-xs font-bold text-gray-300 flex items-center gap-2">
+                   {idx === 0 ? "🚀" : idx === 1 ? "💻" : "🌍"} {badge}
+                </span>
+              ))}
+           </div>
+
+           {/* Actions */}
+           <div className="flex items-center justify-center gap-4">
+              <button 
+                onClick={() => onHire(member)}
+                className={`bg-gradient-to-r from-${member.color}-600 to-${member.color}-500 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-${member.color}-500/25 hover:shadow-${member.color}-500/40 hover:-translate-y-1 transition-all flex items-center gap-2`}
+              >
+                <Briefcase size={18} /> Hire Me
+              </button>
+              <div className="flex gap-2">
+                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Github size={20}/></button>
+                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Linkedin size={20}/></button>
+                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Mail size={20}/></button>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      {/* 3. MAIN CONTENT GRID */}
+      <div className="max-w-7xl mx-auto px-4 pb-20">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* LEFT COLUMN (2/3 width) */}
+            <div className="lg:col-span-2 space-y-8">
+               
+               {/* About Section */}
+               <section>
+                 <div className="flex items-center gap-2 mb-4 text-white font-bold text-xl">
+                    <User className={accentColor} size={24} /> About
+                 </div>
+                 <div className="bg-[#11141B] p-8 rounded-2xl border border-[#1F232C] leading-relaxed text-gray-400">
+                    <p className="mb-4">{member.bio}</p>
+                    <p>Highly skilled in creating scalable, robust web applications. Passionate about clean code, user-centric design, and optimizing performance for millions of users. Always eager to learn new technologies and contribute to open-source communities.</p>
+                 </div>
+               </section>
+
+               {/* Technical Expertise */}
+               <section>
+                 <div className="flex items-center gap-2 mb-4 text-white font-bold text-xl">
+                    <Zap className={accentColor} size={24} /> Technical Expertise
+                 </div>
+                 {/* Top Pills */}
+                 <div className="flex flex-wrap gap-2 mb-6">
+                    {member.arsenal.frontend.map((skill) => (
+                      <span key={skill} className="px-4 py-2 bg-[#161922] border border-[#252A36] rounded-lg text-sm text-gray-300 hover:border-gray-500 transition-colors cursor-default">
+                        {skill}
+                      </span>
+                    ))}
+                 </div>
+
+                 {/* Arsenal Grid */}
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Frontend */}
+                    <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
+                       <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4 text-blue-400"><Layout size={20}/></div>
+                       <h3 className="text-white font-bold mb-4">Frontend</h3>
+                       <ul className="space-y-2 text-sm text-gray-400">
+                          {member.arsenal.frontend.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>{s}</li>)}
+                       </ul>
+                    </div>
+                     {/* Backend */}
+                     <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
+                       <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 text-emerald-400"><Database size={20}/></div>
+                       <h3 className="text-white font-bold mb-4">Backend</h3>
+                       <ul className="space-y-2 text-sm text-gray-400">
+                          {member.arsenal.backend.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>{s}</li>)}
+                       </ul>
+                    </div>
+                     {/* Tools */}
+                     <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] hover:border-[#2F333A] transition-colors">
+                       <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4 text-orange-400"><Terminal size={20}/></div>
+                       <h3 className="text-white font-bold mb-4">Tools</h3>
+                       <ul className="space-y-2 text-sm text-gray-400">
+                          {member.arsenal.tools.map(s => <li key={s} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>{s}</li>)}
+                       </ul>
+                    </div>
+                 </div>
+               </section>
+
+               {/* Featured Projects */}
+               <section>
+                 <div className="flex items-center gap-2 mb-6 text-white font-bold text-xl">
+                    <Layers className={accentColor} size={24} /> Featured Projects
+                 </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {member.projects.map((project, idx) => (
+                      <div key={idx} className="bg-[#11141B] rounded-2xl overflow-hidden border border-[#1F232C] group hover:border-[#3a4150] transition-all">
+                         <div className="h-48 overflow-hidden relative">
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
+                            <img src={project.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={project.title} />
+                         </div>
+                         <div className="p-6">
+                            <h4 className="text-white font-bold text-lg mb-2">{project.title}</h4>
+                            <p className="text-sm text-gray-400 mb-4 line-clamp-2">{project.desc}</p>
+                            <div className="flex justify-between items-center">
+                               <div className="flex gap-2">
+                                  {project.tags.map(t => <span key={t} className="text-[10px] px-2 py-1 bg-[#1C1F26] rounded-md text-gray-300 border border-[#2F333A]">{t}</span>)}
+                               </div>
+                               <button className="text-gray-500 hover:text-white"><ExternalLink size={16}/></button>
+                            </div>
+                         </div>
+                      </div>
+                    ))}
+                 </div>
+               </section>
+
+               {/* Education & Languages */}
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Education */}
+                  <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
+                      <h3 className="text-white font-bold mb-4 flex items-center gap-2"><BookOpen size={18} className="text-blue-400"/> Education</h3>
+                      <div>
+                         <div className="text-white font-medium">{member.education.school}</div>
+                         <div className="text-gray-400 text-sm">{member.education.degree}</div>
+                         <div className="text-gray-600 text-xs mt-1">{member.education.year}</div>
+                      </div>
+                  </div>
+                  {/* Languages */}
+                  <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
+                      <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Globe size={18} className="text-emerald-400"/> Languages</h3>
+                      <div className="flex gap-2 flex-wrap">
+                          {member.languages.map(l => (
+                            <span key={l} className="px-3 py-1 bg-[#1C1F26] border border-[#2F333A] rounded-lg text-sm text-gray-300">
+                               {l}
+                            </span>
+                          ))}
+                      </div>
+                  </div>
+               </div>
+
+            </div>
+
+            {/* RIGHT COLUMN (1/3 width - Sticky) */}
+            <div className="lg:col-span-1 space-y-6">
+               
+               {/* Availability Card */}
+               <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C] sticky top-24">
+                  <h3 className="text-white font-bold text-lg mb-6">Availability</h3>
+                  
+                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-[#1F232C]">
+                     <span className="text-gray-400 text-sm">Current Status</span>
+                     <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full font-medium border border-emerald-500/20 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {member.availability.status}
+                     </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-[#1F232C]">
+                     <span className="text-gray-400 text-sm">Timezone</span>
+                     <span className="text-white text-sm font-medium">{member.availability.timezone}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-8">
+                     <span className="text-gray-400 text-sm">Response Time</span>
+                     <span className="text-white text-sm font-medium">{member.availability.response}</span>
+                  </div>
+
+                  <button 
+                     onClick={() => onHire(member)}
+                     className="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors flex justify-center items-center gap-2"
+                  >
+                     Hire Me
+                  </button>
+               </div>
+
+               {/* Awards Small Card */}
+               <div className="bg-[#11141B] p-6 rounded-2xl border border-[#1F232C]">
+                  <h3 className="text-white font-bold mb-4 flex items-center gap-2"><Trophy size={18} className="text-yellow-400"/> Awards</h3>
+                  <div className="space-y-4">
+                     {member.awards.map((award, i) => (
+                        <div key={i} className="flex gap-3">
+                           <Star size={16} className="text-yellow-500 mt-0.5 shrink-0"/>
+                           <div>
+                              <div className="text-white text-sm font-medium">{award.title}</div>
+                              <div className="text-gray-500 text-xs">{award.org}</div>
+                           </div>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+    </div>
+  );
+}
+
+// --- Other Pages (Preserved) ---
 const PlaceholderPage = ({ title }) => (
   <div className="flex-1 bg-gray-950 flex flex-col items-center justify-center text-center px-4">
     <h1 className="text-4xl font-bold text-white mb-4">{title}</h1>
@@ -1139,7 +1530,7 @@ const Footer = () => (
 // ==========================================
 
 export default function App() {
-  const [activePage, setActivePage] = useState('portfolio');
+  const [activePage, setActivePage] = useState('home');
   const [selectedMember, setSelectedMember] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   
@@ -1160,25 +1551,21 @@ export default function App() {
     window.scrollTo(0,0);
   };
 
-  const handleTalentSearch = (role) => {
-    // Map simplified role names if needed, or stick to direct match
-    const roleMapping = {
-      'Full Stack Developer': 'Full Stack',
-      'Frontend Developer': 'Frontend',
-      'Backend Engineer': 'Backend',
-      'UI/UX Designer': 'UI/UX',
-      'Product Manager': 'Product',
-      'Data Analyst': 'Data'
-    };
-    
-    setActiveRole(roleMapping[role] || 'All');
+  const handleFindTalent = (role) => {
+    setActiveRole(role === 'Full Stack Developer' ? 'Full Stack' : role.split(' ')[0]);
     setActivePage('portfolio');
     window.scrollTo(0,0);
   };
 
   const renderContent = () => {
     switch(activePage) {
-      case 'home': return <PlaceholderPage title="Home Page" />;
+      case 'home': 
+        return (
+          <HomePage 
+            onNavigate={setActivePage} 
+            onSelectMember={handleSelectMember} 
+          />
+        );
       case 'portfolio': 
         return (
           <PortfolioGrid 
@@ -1189,7 +1576,7 @@ export default function App() {
              onSelectMember={handleSelectMember}
           />
         );
-      case 'hire': return <HireTalentPage prefilledMember={selectedMember} onFindTalent={handleTalentSearch} />;
+      case 'hire': return <HireTalentPage prefilledMember={selectedMember} onFindTalent={handleFindTalent} />;
       case 'freelance': return <PlaceholderPage title="Freelance Hub" />;
       case 'login': return <LoginPage />;
       case 'profile_details': 
@@ -1213,8 +1600,8 @@ export default function App() {
       
       {/* Flex container for Sidebar + Main Content */}
       <div className="flex flex-1 relative">
-        {/* Sidebar Logic: Show standard sidebar for Portfolio/Home, minimal for Hire, hide for others */}
-        {(activePage === 'portfolio' || activePage === 'home') && (
+        {/* Only show sidebar on main portfolio page to avoid clutter on home/detail pages */}
+        {(activePage === 'portfolio') && (
            <Sidebar 
               isOpen={isSidebarOpen} 
               toggle={toggleSidebar} 
@@ -1222,18 +1609,13 @@ export default function App() {
               setActiveRole={setActiveRole}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              variant="default"
            />
         )}
-        {activePage === 'hire' && (
+        {(activePage === 'home') && (
            <Sidebar 
               isOpen={isSidebarOpen} 
               toggle={toggleSidebar} 
-              activeRole={activeRole}
-              setActiveRole={setActiveRole}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              variant="minimal"
+              variant="home"
            />
         )}
         
