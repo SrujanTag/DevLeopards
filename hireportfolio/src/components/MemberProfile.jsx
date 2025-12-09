@@ -61,9 +61,9 @@ function MemberProfile({ baseMember, onHire, onBack }) {
                 <Briefcase size={18} /> Hire Me
               </button>
               <div className="flex gap-2">
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Github size={20}/></button>
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Linkedin size={20}/></button>
-                <button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Mail size={20}/></button>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer"><button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Github size={20}/></button></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Linkedin size={20}/></button></a>
+                <a href="https://gmail.com" target="_blank" rel="noopener noreferrer"><button className="p-3 rounded-full bg-[#1C1F26] hover:bg-gray-700 text-gray-400 hover:text-white transition-colors border border-[#2F333A]"><Mail size={20}/></button></a>
               </div>
            </div>
         </div>

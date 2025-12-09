@@ -12,7 +12,7 @@ export const USERS = [
       backend: ["Node.js", "Express", "MongoDB"], 
       tools: ["Git", "API Design"] 
     },
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/kartikey.jpg", 
     color: "cyan",
   },
   {
@@ -26,7 +26,7 @@ export const USERS = [
       backend: ["Prototyping", "User Flow"], 
       tools: ["Design Systems"] 
     },
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/srujan.jpg", 
     color: "purple",
   },
   {
@@ -40,7 +40,7 @@ export const USERS = [
       backend: ["Firebase", "Auth"], 
       tools: ["Webpack", "SEO"] 
     },
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/palak.jpg",
     color: "emerald",
   },
   {
@@ -54,7 +54,7 @@ export const USERS = [
       backend: ["Python", "Django", "Postgres"], 
       tools: ["Docker", "AWS"] 
     },
-    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/ayush.jpg", 
     color: "blue",
   },
   {
@@ -68,7 +68,7 @@ export const USERS = [
       backend: ["Agile", "Scrum"], 
       tools: ["User Stories"] 
     },
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/eshita.jpg",
     color: "pink",
   },
   {
@@ -82,7 +82,7 @@ export const USERS = [
       backend: ["SQL", "Python"], 
       tools: ["Statistics"] 
     },
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?fit=crop&w=800&q=80",
+    avatar: process.env.PUBLIC_URL + "/aadya.jpg",
     color: "orange",
   },
 ];
@@ -148,11 +148,11 @@ export const getDetailedData = (user) => {
       }
     ],
     education: {
-      school: "National Institute of Design",
-      degree: "Master of Design",
-      year: "2019-2021"
+      school: "Indian Institute of Information Technology",
+      degree: "B.Tech Computer Science",
+      year: "2025-2029"
     },
-    languages: ["English", "Hindi", "German"],
+    languages: ["English", "Hindi"],
     awards: [
       { title: "Best UI Design 2024", org: "Dribbble Awards" },
       { title: "Google UX Certificate", org: "Coursera" }
@@ -160,8 +160,8 @@ export const getDetailedData = (user) => {
   };
 
   if (user.role.includes("Developer")) {
-    defaults.education.school = "Indian Institute of Technology";
-    defaults.education.degree = "B.Tech Computer Science";
+    defaults.education.school = "Indian Institute of Information Technology";
+    defaults.education.degree = "B.Tech Information Technology";
     defaults.awards = [{title: "Hackathon Winner", org: "SmartIndia"}, {title: "AWS Certified", org: "Amazon"}];
     defaults.projects[0].title = "E-Commerce Platform";
     defaults.projects[0].tags = ["React", "Node.js"];

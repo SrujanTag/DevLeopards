@@ -133,15 +133,7 @@ const Sidebar = ({ isOpen, toggle, activeRole, setActiveRole, searchQuery, setSe
           </ul>
         </div>
         
-        {variant === 'default' && (
-          <div className="mt-8 bg-gradient-to-br from-blue-900/50 to-purple-900/50 rounded-lg p-4 border border-blue-500/30">
-            <h5 className="text-white text-sm font-bold mb-1">Need a custom team?</h5>
-            <p className="text-gray-400 text-xs mb-3">We can build a squad for you.</p>
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 rounded transition-colors">
-              Get Quote
-            </button>
-          </div>
-        )}
+        
       </div>
     </aside>
   );
