@@ -17,7 +17,7 @@ export const USERS = [{
   name: "Srujan Tagalpallewar",
   role: "UI/UX Designer",
   bio: "I design interfaces that are not just beautiful but intuitive.",
-  email: "srujan@gmail.com",
+  email: "srujan392159@gmail.com",
   skills: {
     frontend: ["Figma", "Adobe XD", "CSS3"],
     backend: ["Prototyping", "User Flow"],
@@ -43,7 +43,7 @@ export const USERS = [{
   name: "Ayush Bharti",
   role: "Backend Engineer",
   bio: "Building robust APIs and scalable database architectures is my forte.",
-  email: "ayush@gmail.com",
+  email: "ayushbharti@gmail.com",
   skills: {
     frontend: ["HTML", "Basic JS"],
     backend: ["Python", "Django", "Postgres"],

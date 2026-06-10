@@ -8,6 +8,7 @@ import HireTalentPage from './pages/HireTalentPage';
 import LoginPage from './pages/LoginPage';
 import MemberProfile from './components/MemberProfile';
 import AddProfileForm from './components/AddProfileForm';
+import WhatsAppButton from './components/WhatsAppButton';
 
 import { ToastProvider } from './components/Toast';
 import { useDeviceSession } from './hooks/useDeviceSession';
@@ -91,7 +92,7 @@ function InnerApp() {
         </div>
       </div>
       <Footer />
-
+      <WhatsAppButton />
     </div>;
 }
 export default function App() {

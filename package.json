@@ -1,7 +1,7 @@
 {
   "name": "hireportfolio",
   "version": "0.1.0",
-  "private": true,
+  "private": true, 
   "homepage": "https://SrujanTag.github.io/HirePortfolio",
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -27,6 +27,7 @@
       "react-app/jest"
     ]
   },
+
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,6 +40,7 @@
       "last 1 safari version"
     ]
   },
+  
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "gh-pages": "^6.3.0",
