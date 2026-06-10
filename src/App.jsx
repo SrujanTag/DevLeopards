@@ -8,7 +8,7 @@ import HireTalentPage from './pages/HireTalentPage';
 import LoginPage from './pages/LoginPage';
 import MemberProfile from './components/MemberProfile';
 import AddProfileForm from './components/AddProfileForm';
-import ChatBot from './components/ChatBot';
+
 import { ToastProvider } from './components/Toast';
 import { useDeviceSession } from './hooks/useDeviceSession';
 import { USERS } from './data/constants';
@@ -58,18 +58,7 @@ function InnerApp() {
   const handleDeleteProfile = id => {
     setUsers(prev => prev.filter(u => u.id !== id));
   };
-  const handleBotNavigate = (page, person) => {
-    if (page === 'hire') {
-      setSelectedMember(person || null);
-      setActivePage('hire');
-    } else if (page === 'profile') {
-      setSelectedMember(person || null);
-      setActivePage('profile_details');
-    } else {
-      setActivePage(page);
-    }
-    window.scrollTo(0, 0);
-  };
+
   const renderContent = () => {
     switch (activePage) {
       case 'home':
@@ -102,7 +91,7 @@ function InnerApp() {
         </div>
       </div>
       <Footer />
-      <ChatBot users={users} onNavigate={handleBotNavigate} />
+
     </div>;
 }
 export default function App() {
